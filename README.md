@@ -6,9 +6,10 @@ Hệ thống mô phỏng một quy trình sản xuất âm thanh như một đo�
 
 **User Stories:**
 - **Người dùng:** Cung cấp một file `script.txt` với nội dung:
-  ```
-Tại một phòng tư vấn tâm lý....
-  ```
+```
+Tại một phòng tư vấn tâm lý...
+```
+ 
 - **Hệ thống:**
     1.  **Đạo diễn AI** đọc file `script.txt`, nhận diện được hai vai là "Chuyên gia tư vấn" và "Người cao tuổi", và bóc tách được lời thoại của từng người.
     2.  **Diễn viên AI (Chuyên gia)** nhận câu thoại "Chào bác, hôm nay bác cảm thấy thế nào?" và diễn lại thành: "Với giọng ấm áp và quan tâm, hãy nói: Chào bác, hôm nay bác cảm thấy thế nào ạ?"
