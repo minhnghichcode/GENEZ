@@ -1,31 +1,45 @@
-import time
-from fastapi import FastAPI, Request
-from starlette.responses import JSONResponse
+import os
+import logging
+from flow import create_podcast_production_flow
+from dotenv import load_dotenv
 
-app = FastAPI(title="Simple FastAPI Boilerplate")
+# --- Logging Configuration ---
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
 
-@app.middleware("http")
-async def add_process_time_header(request: Request, call_next):
-    start_time = time.time()
-    response = await call_next(request)
-    process_time = time.time() - start_time
-    response.headers["X-Process-Time"] = str(process_time)
-    print(f"Request to {request.url} processed in {process_time:.4f} seconds")
-    return response
+def main():
+    """
+    Main function to run the podcast production pipeline.
+    """
+    load_dotenv()
 
-@app.get("/", tags=["Root"])
-async def root():
-    return {"message": "Hello, World!"}
+    shared = {
+        "input_script_path": "input/kichban.txt",
+        "structured_script": [],
+        "acted_script": [],
+        "audio_segments_paths": [],
+        "final_podcast_path": ""
+    }
 
-@app.get("/health", tags=["Monitoring"])
-async def health_check():
-    return JSONResponse(content={"status": "healthy"}, status_code=200)
+    logging.info("Starting the podcast production pipeline...")
+    
+    podcast_flow = create_podcast_production_flow()
+    
+    podcast_flow.run(shared)
+
+    logging.info("--- Pipeline Finished ---")
+    final_path = shared.get("final_podcast_path")
+    if final_path and os.path.exists(final_path):
+        logging.info(f"Success! Your podcast is ready at: {final_path}")
+    else:
+        logging.error("Failure. The podcast could not be generated. Please check the logs for errors.")
+    logging.info("------------------------")
 
 
-@app.get("/items/{item_id}", tags=["Items"])
-async def read_item(item_id: int):
-    return {"item_id": item_id, "item_name": "Example Item"}
-
-@app.post("/items/", tags=["Items"])
-async def create_item(name: str):
-    return {"message": f"Item '{name}' created successfully"}
+if __name__ == "__main__":
+    os.makedirs("input", exist_ok=True)
+    os.makedirs("output/segments", exist_ok=True)    
+    main()
