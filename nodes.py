@@ -75,14 +75,12 @@ class SynthesizeAudioNode(BatchNode):
         logging.info(f"[SynthesizeAudioNode] Processing segment {segment_index} for role: {role}")
         
         voice_map = {"Chuyên gia tư vấn": "Kore", "Người cao tuổi": "Zephyr"}
-        voice_name = voice_map.get(role, "Puck") # Default voice for "Bối cảnh"
-
+        voice_name = voice_map.get(role, "Puck") 
         output_path = f"output/segments/segment_{segment_index}.mp3"
-
         logging.info(f"[SynthesizeAudioNode] Calling TTS API for segment {segment_index}...")
         result_path = text_to_speech(acted_dialogue, voice_name, output_path)
         logging.info(f"[SynthesizeAudioNode] TTS API call finished for segment {segment_index}.")
-        
+
         return result_path
 
     def post(self, shared, prep_res, exec_res_list):

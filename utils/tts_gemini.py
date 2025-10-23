@@ -24,7 +24,7 @@ def text_to_speech(text_input: str, voice_name: str, output_path: str, max_retri
         'Content-Type': 'application/json'
     }
     payload = {
-        "model": "gemini-2.5-flash-preview-tts",
+        "model": "gemini-2.5-pro-preview-tts",
         "input": text_input,
         "voice": voice_name
     }
