@@ -7,9 +7,6 @@ from nodes import (
 )
 
 def create_podcast_production_flow() -> Flow:
-    """
-    Creates and connects the nodes to form the podcast production flow.
-    """
     parse_script_node = ParseScriptNode()
     act_script_node = ActScriptNode()
     synthesize_audio_node = SynthesizeAudioNode()
